@@ -1,6 +1,6 @@
-const $app = document.getElementById('app');
-const $observe = document.getElementById('observe');
-const API = 'https://rickandmortyapi.com/api/character/';
+const $app = document.getElementById('app')
+const $observe = document.getElementById('observe')
+const API = 'https://rickandmortyapi.com/api/character/'
 
 class Storage {
   constructor(){
@@ -33,13 +33,7 @@ class Storage {
 const store = new Storage()
 
 const getData = api => {
-  fetch(api)
-    .then(response => response.json())
-    .then(response => {
-      store.setNext(response.info.next)
-      renderResults(response)
-    })
-    .catch(error => console.log(error));
+  return fetch(api)
 }
 
 const renderResults = ({results}) => {
@@ -58,8 +52,15 @@ const renderResults = ({results}) => {
     $app.appendChild(newItem);
 }
 
-const loadData = () => {
-  getData(API);
+const loadData = async () => {
+  try {
+    let response = await getData(store.getCurrentApi())
+    response = await response.json()
+    store.setNext(response.info.next)
+    renderResults(response)
+  } catch (error) {
+    console.error(`Algo malo ocurrió: ${error}`)  
+  }
 }
 
 const callBack = (entries) => {
@@ -68,6 +69,6 @@ const callBack = (entries) => {
   }
 }
 
-const intersectionObserver = new IntersectionObserver( callBack, { rootMargin: '0px 0px 100% 0px',});
+const intersectionObserver = new IntersectionObserver( callBack, { rootMargin: '0px 0px 100% 0px',})
 
 intersectionObserver.observe($observe);
