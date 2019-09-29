@@ -16,7 +16,10 @@ class Storage {
   isFirst() {
     return localStorage.getItem(this.key) === null ? true : false
   }
-
+  
+  isLast(value){
+    return value.length === 0 ? true : false 
+  }
   getNext() {
     return localStorage.getItem(this.key)
   }
@@ -52,12 +55,25 @@ const renderResults = ({results}) => {
     $app.appendChild(newItem);
 }
 
+const renderEmpty = () => {
+  let p = document.createElement('p')
+  p.id="empty"
+  p.innerText = "No hay más resultados :)."
+  $app.appendChild(p)
+}
+
 const loadData = async () => {
   try {
     let response = await getData(store.getCurrentApi())
     response = await response.json()
-    store.setNext(response.info.next)
+    const next_api =  response.info.next;
+    store.setNext(next_api)
     renderResults(response)
+    if(store.isLast(next_api)){
+      intersectionObserver.unobserve($observe)
+      renderEmpty()
+    }
+    
   } catch (error) {
     console.error(`Algo malo ocurrió: ${error}`)  
   }

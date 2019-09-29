@@ -54,3 +54,10 @@ body {
   }
 }
 
+#empty {
+  width: 100%;
+  font-size: 40px;
+  text-align: center;
+  text-shadow: 2px 1px 0px rgb(36, 204, 246);
+  font-weight: bold;
+}
