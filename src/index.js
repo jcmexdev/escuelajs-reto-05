@@ -72,3 +72,5 @@ const callBack = (entries) => {
 const intersectionObserver = new IntersectionObserver( callBack, { rootMargin: '0px 0px 100% 0px',})
 
 intersectionObserver.observe($observe);
+
+document.addEventListener('DOMContentLoaded', store.clearAll())
